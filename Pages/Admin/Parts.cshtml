@@ -7,7 +7,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="h4 mb-0">Phụ Tùng</h2>
-    <a class="btn btn-dark" asp-page="" asp-route-create="true">+ Thêm Phụ Tùng</a>
+    <a class="btn btn-dark" asp-page="./Parts" asp-route-create="true">+ Thêm Phụ Tùng</a>
 </div>
 
 @if (Model.IsEditing)
@@ -83,9 +83,9 @@
                         <td>@part.Quantity</td>
                         <td>@part.Price.ToString("N0")₫</td>
                         <td>
-                            <a class="text-decoration-none" asp-page="" asp-route-editId="@part.Id">Sửa</a>
+                            <a class="text-decoration-none" asp-page="./Parts" asp-route-editId="@part.Id">Sửa</a>
                             <span class="mx-1">|</span>
-                            <form method="post" asp-page-handler="Delete" asp-route-id="@part.Id" class="d-inline">
+                            <form method="post" asp-page-handler="Delete" asp-page="./Parts" asp-route-id="@part.Id" class="d-inline">
                                 <button type="submit" class="btn btn-link p-0 text-danger"
                                         onclick="return confirm('Bạn có chắc muốn xóa?');">Xóa</button>
                             </form>
