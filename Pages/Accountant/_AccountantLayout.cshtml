@@ -1,0 +1,68 @@
+@{
+    Layout = null;
+    var title = ViewData["Title"] as string ?? "Dashboard Kế toán";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+    Func<string, string> navClass = page => currentPage.Equals(page, StringComparison.OrdinalIgnoreCase) ? "nav-link active" : "nav-link";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@title - Auto Garage Manager (Accountant)</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="accountant-body">
+    <div class="d-flex">
+        <aside class="accountant-sidebar">
+            <div class="accountant-logo mb-4">
+                <span class="fw-bold">Auto Garage Manager</span>
+                <small class="text-muted d-block">Kế toán</small>
+            </div>
+            <nav class="nav flex-column accountant-menu">
+                <a class="@(navClass("/Accountant/Index"))" asp-page="/Accountant/Index">
+                    <span>🟦</span> <span>Dashboard</span>
+                </a>
+                <a class="@(navClass("/Accountant/Invoices"))" asp-page="/Accountant/Invoices">
+                    <span>📄</span> <span>Hóa đơn</span>
+                </a>
+                <a class="@(navClass("/Accountant/Reports"))" asp-page="/Accountant/Reports">
+                    <span>📊</span> <span>Báo cáo</span>
+                </a>
+                <a class="@(navClass("/Accountant/Parts"))" asp-page="/Accountant/Parts">
+                    <span>🛠️</span> <span>Quản lý kho</span>
+                </a>
+                <a class="@(navClass("/Accountant/Customers"))" asp-page="/Accountant/Customers">
+                    <span>👤</span> <span>Khách hàng</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="accountant-main flex-grow-1">
+            <header class="accountant-topbar d-flex justify-content-between align-items-center">
+                <div class="accountant-topbar-title">
+                    <h1 class="h5 mb-0">@title</h1>
+                </div>
+                <div class="accountant-topbar-user d-flex align-items-center gap-3">
+                    <div class="text-end">
+                        <div class="small fw-semibold">@User.Identity?.Name</div>
+                        <div class="small text-muted">Kế toán</div>
+                    </div>
+                    <form method="post" asp-page="/Logout" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Đăng xuất</button>
+                    </form>
+                </div>
+            </header>
+
+            <main class="accountant-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

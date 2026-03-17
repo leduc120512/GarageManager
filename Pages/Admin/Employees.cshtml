@@ -1,0 +1,51 @@
+@page
+@model AutoGarageManager.Pages.Admin.EmployeesModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản Lý Nhân Viên";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Quản Lý Nhân Viên</h2>
+    <a class="btn btn-dark" href="#">+ Thêm Nhân Viên</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên</th>
+                    <th>Chức vụ</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th style="width: 160px;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Nguyễn Văn Thợ</td>
+                    <td>Thợ chính</td>
+                    <td>0901234567</td>
+                    <td>tho@garage.com</td>
+                    <td>
+                        <a class="text-decoration-none" href="#">Sửa</a>
+                        <span class="mx-1">|</span>
+                        <a class="text-danger text-decoration-none" href="#">Xóa</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Trần Thị Kế Toán</td>
+                    <td>Kế toán</td>
+                    <td>0902345678</td>
+                    <td>ketoan@garage.com</td>
+                    <td>
+                        <a class="text-decoration-none" href="#">Sửa</a>
+                        <span class="mx-1">|</span>
+                        <a class="text-danger text-decoration-none" href="#">Xóa</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

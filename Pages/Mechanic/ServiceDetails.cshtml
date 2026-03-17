@@ -1,0 +1,39 @@
+@page
+@model AutoGarageManager.Pages.Mechanic.ServiceDetailsModel
+
+<div class="service-details">
+    @if (Model.ServiceHistory != null)
+    {
+        <h6>@Model.ServiceHistory.Description</h6>
+        <p><strong>Ngày sửa:</strong> @Model.ServiceHistory.ServiceDate.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Thợ sửa:</strong> @(Model.ServiceHistory.Mechanic?.FullName ?? "N/A")</p>
+
+        @if (Model.ServiceHistory.ServicesPerformed.Any())
+        {
+            <h6>Dịch vụ đã thực hiện:</h6>
+            <ul>
+                @foreach (var service in Model.ServiceHistory.ServicesPerformed)
+                {
+                    <li>@service.Service.Name - @service.Price.ToString("N0")₫</li>
+                }
+            </ul>
+        }
+
+        @if (Model.ServiceHistory.PartsUsed.Any())
+        {
+            <h6>Phụ tùng đã sử dụng:</h6>
+            <ul>
+                @foreach (var part in Model.ServiceHistory.PartsUsed)
+                {
+                    <li>@part.Part.Name x@part.Quantity - @part.UnitPrice.ToString("N0")₫</li>
+                }
+            </ul>
+        }
+
+        <p><strong>Tổng tiền:</strong> @Model.ServiceHistory.TotalCost.ToString("N0")₫</p>
+    }
+    else
+    {
+        <p class="text-muted">Không tìm thấy thông tin lần sửa.</p>
+    }
+</div>

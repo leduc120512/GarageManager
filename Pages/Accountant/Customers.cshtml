@@ -1,0 +1,55 @@
+@page
+@model AutoGarageManager.Pages.Accountant.CustomersModel
+@{
+    Layout = "/Pages/Accountant/_AccountantLayout.cshtml";
+    ViewData["Title"] = "Quản lý khách hàng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Quản lý khách hàng</h2>
+    <a class="btn btn-dark" href="#">+ Thêm khách hàng</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Số xe</th>
+                    <th>Tổng chi tiêu</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model.Customers)
+                {
+                    <tr>
+                        <td>@customer.FullName</td>
+                        <td>@customer.Phone</td>
+                        <td>@customer.Email</td>
+                        <td>@customer.Vehicles.Count</td>
+                        <td>
+                            @{
+                                var totalSpent = Model.CustomerTotals.FirstOrDefault(ct => ct.CustomerId == customer.Id)?.Total ?? 0;
+                            }
+                            @totalSpent.ToString("N0")₫
+                        </td>
+                        <td>
+                            <a class="text-decoration-none me-2" href="#">Xem chi tiết</a>
+                            <a class="text-decoration-none" href="#">Sửa</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Customers.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Chưa có khách hàng nào</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

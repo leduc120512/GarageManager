@@ -1,0 +1,82 @@
+@page "/Mechanic/Index"
+@model AutoGarageManager.Pages.Mechanic.IndexModel
+@{
+    Layout = "/Pages/Mechanic/_MechanicLayout.cshtml";
+    ViewData["Title"] = "Dashboard Thợ";
+}
+
+<div class="mechanic-dashboard">
+    <div class="row g-3 mb-4">
+        <div class="col-md-4 col-sm-6">
+            <div class="mechanic-stat-card">
+                <div class="mechanic-stat-label">Xe đang sửa hôm nay</div>
+                <div class="mechanic-stat-value">@Model.TodayServices</div>
+                <div class="mechanic-stat-dot bg-primary"></div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="mechanic-stat-card">
+                <div class="mechanic-stat-label">Tổng xe đã sửa</div>
+                <div class="mechanic-stat-value">@Model.TotalServices</div>
+                <div class="mechanic-stat-dot bg-success"></div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="mechanic-stat-card">
+                <div class="mechanic-stat-label">Nhắc bảo dưỡng</div>
+                <div class="mechanic-stat-value">@Model.PendingReminders</div>
+                <div class="mechanic-stat-dot bg-warning"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-0">
+                    <h2 class="h6 mb-0">Lịch sửa chữa hôm nay</h2>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach (var service in Model.TodayServiceHistories)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">@service.Vehicle.LicensePlate</div>
+                                <small class="text-muted">@service.Description</small>
+                            </div>
+                            <span class="badge bg-primary">@service.ServiceDate.ToString("HH:mm")</span>
+                        </div>
+                    }
+                    @if (!Model.TodayServiceHistories.Any())
+                    {
+                        <div class="list-group-item text-center text-muted">Không có lịch sửa chữa nào hôm nay</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-0">
+                    <h2 class="h6 mb-0">Nhắc bảo dưỡng gần đây</h2>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach (var reminder in Model.RecentReminders)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">@reminder.Vehicle.LicensePlate</div>
+                                <small class="text-muted">@reminder.Title</small>
+                            </div>
+                            <span class="badge bg-warning">@reminder.ReminderDate.ToString("dd/MM")</span>
+                        </div>
+                    }
+                    @if (!Model.RecentReminders.Any())
+                    {
+                        <div class="list-group-item text-center text-muted">Không có nhắc bảo dưỡng nào</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+@page
+@model AutoGarageManager.Pages.Admin.CustomersModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản Lý Khách Hàng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Quản Lý Khách Hàng</h2>
+    <a class="btn btn-dark" asp-page="./Customers/Create">+ Thêm Khách Hàng</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Số xe</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model.Customers)
+                {
+                    <tr>
+                        <td>@customer.FullName</td>
+                        <td>@customer.Phone</td>
+                        <td>@customer.Email</td>
+                        <td>@customer.Vehicles.Count</td>
+                        <td>
+                            <a class="text-decoration-none" asp-page="./Customers/Edit" asp-route-id="@customer.Id">Sửa</a>
+                            <span class="mx-1">|</span>
+                            <a class="text-decoration-none text-danger" asp-page="./Customers/Delete" asp-route-id="@customer.Id">Xóa</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Customers.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Chưa có khách hàng nào</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

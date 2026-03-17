@@ -1,0 +1,68 @@
+@{
+    Layout = null;
+    var title = ViewData["Title"] as string ?? "Dashboard Thợ";
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+    Func<string, string> navClass = page => currentPage.Equals(page, StringComparison.OrdinalIgnoreCase) ? "nav-link active" : "nav-link";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@title - Auto Garage Manager (Mechanic)</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="mechanic-body">
+    <div class="d-flex">
+        <aside class="mechanic-sidebar">
+            <div class="mechanic-logo mb-4">
+                <span class="fw-bold">Auto Garage Manager</span>
+                <small class="text-muted d-block">Thợ sửa chữa</small>
+            </div>
+            <nav class="nav flex-column mechanic-menu">
+                <a class="@(navClass("/Mechanic/Index"))" asp-page="/Mechanic/Index">
+                    <span>🟦</span> <span>Dashboard</span>
+                </a>
+                <a class="@(navClass("/Mechanic/Vehicles"))" asp-page="/Mechanic/Vehicles">
+                    <span>🚗</span> <span>Quản lý xe</span>
+                </a>
+                <a class="@(navClass("/Mechanic/ServiceHistory"))" asp-page="/Mechanic/ServiceHistory">
+                    <span>📋</span> <span>Lịch sử sửa chữa</span>
+                </a>
+                <a class="@(navClass("/Mechanic/CreateService"))" asp-page="/Mechanic/CreateService">
+                    <span>🔧</span> <span>Tạo lần sửa</span>
+                </a>
+                <a class="@(navClass("/Mechanic/Reminders"))" asp-page="/Mechanic/Reminders">
+                    <span>⏰</span> <span>Nhắc bảo dưỡng</span>
+                </a>
+            </nav>
+        </aside>
+
+        <div class="mechanic-main flex-grow-1">
+            <header class="mechanic-topbar d-flex justify-content-between align-items-center">
+                <div class="mechanic-topbar-title">
+                    <h1 class="h5 mb-0">@title</h1>
+                </div>
+                <div class="mechanic-topbar-user d-flex align-items-center gap-3">
+                    <div class="text-end">
+                        <div class="small fw-semibold">@User.Identity?.Name</div>
+                        <div class="small text-muted">Thợ sửa chữa</div>
+                    </div>
+                    <form method="post" asp-page="/Logout" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Đăng xuất</button>
+                    </form>
+                </div>
+            </header>
+
+            <main class="mechanic-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

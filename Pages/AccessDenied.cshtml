@@ -1,0 +1,14 @@
+@page
+@model AutoGarageManager.Pages.AccessDeniedModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Truy cập bị từ chối";
+}
+
+<div class="container py-5">
+    <div class="alert alert-danger">
+        <h4 class="alert-heading">Truy cập bị từ chối</h4>
+        <p>Bạn không có quyền truy cập vào trang này.</p>
+        <a class="btn btn-primary" asp-page="/Index">Quay về trang chủ</a>
+    </div>
+</div>

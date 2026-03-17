@@ -1,0 +1,255 @@
+@page
+@model AutoGarageManager.Pages.Customer.ServiceHistoryModel
+@{
+    ViewData["Title"] = "Lịch sử sửa chữa";
+    Layout = "~/Pages/Customer/_CustomerLayout.cshtml";
+}
+
+<div class="py-4 px-3 px-lg-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-6 fw-bold mb-2">🔧 Lịch sử sửa chữa</h1>
+            <p class="text-muted lead">Xem chi tiết các lần sửa chữa của xe bạn</p>
+        </div>
+        <a class="btn btn-outline-primary" asp-page="./Vehicles">
+            <i class="fas fa-car me-2"></i>Quay lại xe
+        </a>
+    </div>
+
+    <!-- Filter by Vehicle -->
+    <div class="mb-4">
+        <form method="get" class="card border-0 shadow-sm p-3">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Lọc theo xe:</label>
+                    <select class="form-select" name="vehicleId" onchange="this.form.submit()">
+                        <option value="">-- Tất cả xe --</option>
+                        @foreach (var vehicle in Model.Vehicles)
+                        {
+                            var selected = vehicle.Id == Model.SelectedVehicleId ? "selected" : null;
+                            <option value="@vehicle.Id" selected="@selected">
+                                @vehicle.LicensePlate - @vehicle.Make @vehicle.Model
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="text-muted small mb-0">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Tổng cộng: <strong>@Model.ServiceHistories.Count</strong> lần sửa
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (!Model.ServiceHistories.Any())
+    {
+        <!-- Empty State -->
+        <div class="card border-0 shadow-sm text-center py-5">
+            <div class="card-body">
+                <div style="font-size: 4rem; color: #0d6efd; margin-bottom: 1rem;">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Chưa có lịch sử sửa chữa</h4>
+                <p class="text-muted mb-4">Xe bạn chủa được sửa chữa lần nào. Liên hệ nhân viên để đặt lịch sửa chữa.</p>
+                <a class="btn btn-primary" asp-page="./Support">
+                    <i class="fas fa-headset me-2"></i>Liên hệ hỗ trợ
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Timeline View -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="timeline">
+                    @{
+                        var services = Model.ServiceHistories.OrderByDescending(s => s.ServiceDate).ToList();
+                    }
+
+                    @foreach (var (history, index) in services.Select((x, i) => (x, i)))
+                    {
+                        <div class="timeline-item mb-4 pb-4 @(index == services.Count - 1 ? "" : "border-bottom")">
+                            <div class="row">
+                                <!-- Timeline marker -->
+                                <div class="col-auto">
+                                    <div class="timeline-marker">
+                                        <i class="fas fa-tools text-primary"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Content -->
+                                <div class="col">
+                                    <div class="card border-0 bg-light h-100">
+                                        <div class="card-body">
+                                            <!-- Date & Vehicle -->
+                                            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
+                                                <div>
+                                                    <h6 class="fw-bold mb-1">
+                                                        <i class="fas fa-calendar me-2 text-primary"></i>
+                                                        @history.ServiceDate.ToString("dd/MM/yyyy")
+                                                    </h6>
+                                                    <p class="text-muted small mb-0">
+                                                        <i class="fas fa-car me-2"></i>
+                                                        @history.Vehicle?.LicensePlate
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Service Details -->
+                                            <div class="row g-3 mb-3">
+                                                <div class="col-md-6">
+                                                    <label class="text-muted small fw-bold">Mô tả dịch vụ</label>
+                                                    <p class="mb-0">@history.Description</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="text-muted small fw-bold">Thợ sửa</label>
+                                                    <p class="mb-0">@(history.Mechanic?.FullName ?? "N/A")</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="text-muted small fw-bold">Tổng chi phí</label>
+                                                    <p class="mb-0 fw-bold text-success">@history.TotalCost.ToString("N0")₫</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="text-muted small fw-bold">Trạng thái</label>
+                                                    <p class="mb-0">
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check-circle me-1"></i>Hoàn thành
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Service Parts (if any) -->
+                                            @if (history.ServicesPerformed?.Any() == true)
+                                            {
+                                                <div class="mt-3 pt-3 border-top">
+                                                    <label class="text-muted small fw-bold mb-2 d-block">Các dịch vụ được thực
+                                                        hiện</label>
+                                                        <div class="gap-2 d-flex flex-wrap">
+                                                            @foreach (var service in history.ServicesPerformed)
+                                                            {
+                                                                <span class="badge bg-info text-white px-3 py-2">
+                                                                    <i class="fas fa-cog me-1"></i>
+                                                                    @service.Service?.Name
+                                                                </span>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                @if (history.PartsUsed?.Any() == true)
+                                                {
+                                                    <div class="mt-3 pt-3 border-top">
+                                                        <label class="text-muted small fw-bold mb-2 d-block">Phụ tùng được thay
+                                                            thế</label>
+                                                            <div class="gap-2 d-flex flex-wrap">
+                                                                @foreach (var part in history.PartsUsed)
+                                                                {
+                                                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                                                        <i class="fas fa-cube me-1"></i>
+                                                                        @part.Part?.Name
+                                                                    </span>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Info -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0">
+                            <i class="fas fa-receipt me-2 text-primary"></i>
+                            Thống kê tổng
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="p-3 bg-light rounded text-center">
+                                    <p class="text-muted small mb-1">Tổng số lần sửa</p>
+                                    <h4 class="fw-bold mb-0">@Model.ServiceHistories.Count</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-light rounded text-center">
+                                    <p class="text-muted small mb-1">Tổng chi phí</p>
+                                    <h4 class="fw-bold text-success mb-0">@Model.ServiceHistories.Sum(s =>
+                                                                    s.TotalCost).ToString("N0")₫</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="p-3 bg-light rounded text-center">
+                                        <p class="text-muted small mb-1">Chi phí trung bình</p>
+                                        <h4 class="fw-bold mb-0">
+                                            @(Model.ServiceHistories.Any() ? ((long)Model.ServiceHistories.Average(s =>
+                                        s.TotalCost)).ToString("N0") : "0")₫
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <style>
+                .timeline {
+                    position: relative;
+                }
+
+                .timeline-item {
+                    position: relative;
+                }
+
+                .timeline-marker {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    background: white;
+                    border: 3px solid #0d6efd;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1rem;
+                    position: relative;
+                    top: 8px;
+                }
+
+                .timeline-item:not(:last-child) .timeline-marker::after {
+                    content: '';
+                    position: absolute;
+                    top: 36px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 2px;
+                    height: 60px;
+                    background: #dee2e6;
+                }
+
+                .timeline-marker i {
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .timeline-item .card {
+                    transition: all 0.3s ease;
+                }
+
+                .timeline-item .card:hover {
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+                    transform: translateY(-2px);
+                }
+            </style>

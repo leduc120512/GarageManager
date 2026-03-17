@@ -1,0 +1,63 @@
+@page
+@model AutoGarageManager.Pages.Accountant.PartsModel
+@{
+    Layout = "/Pages/Accountant/_AccountantLayout.cshtml";
+    ViewData["Title"] = "Quản lý kho phụ tùng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Quản lý kho phụ tùng</h2>
+    <a class="btn btn-dark" href="#">+ Nhập phụ tùng</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên phụ tùng</th>
+                    <th>Loại</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Nhà cung cấp</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model.Parts)
+                {
+                    <tr>
+                        <td>@part.Name</td>
+                        <td>@part.Category</td>
+                        <td>
+                            @if (part.Quantity < 5)
+                            {
+                                <span class="badge bg-danger">@part.Quantity</span>
+                            }
+                            else if (part.Quantity < 10)
+                            {
+                                <span class="badge bg-warning">@part.Quantity</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">@part.Quantity</span>
+                            }
+                        </td>
+                        <td>@part.Price.ToString("N0")₫</td>
+                        <td>@part.Supplier</td>
+                        <td>
+                            <a class="text-decoration-none me-2" href="#">Sửa</a>
+                            <a class="text-decoration-none" href="#">Nhập thêm</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Parts.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Chưa có phụ tùng nào</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

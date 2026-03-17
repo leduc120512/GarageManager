@@ -1,0 +1,90 @@
+@page
+@model AutoGarageManager.Pages.Customer.CreateVehicleModel
+@{
+    ViewData["Title"] = "Thêm xe mới";
+    Layout = "~/Pages/Customer/_CustomerLayout.cshtml";
+}
+
+<div class="py-4 px-3 px-lg-4">
+    <!-- Header -->
+    <div class="mb-5">
+        <h1 class="display-6 fw-bold mb-2">🚗 Thêm xe mới</h1>
+        <p class="text-muted lead">Nhập thông tin xe của bạn để thêm vào hệ thống</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="post">
+                        <!-- Make -->
+                        <div class="mb-4">
+                            <label asp-for="Vehicle.Make" class="form-label fw-bold">Hãng sản xuất <span
+                                class="text-danger">*</span></label>
+                                <input asp-for="Vehicle.Make" class="form-control form-control-lg"
+                                       placeholder="Ví dụ: Toyota, Honda, BMW..." />
+                                <span asp-validation-for="Vehicle.Make" class="text-danger small d-block mt-1"></span>
+                            </div>
+
+                            <!-- Model -->
+                            <div class="mb-4">
+                                <label asp-for="Vehicle.Model" class="form-label fw-bold">Model <span
+                                    class="text-danger">*</span></label>
+                                    <input asp-for="Vehicle.Model" class="form-control form-control-lg"
+                                           placeholder="Ví dụ: Corolla, Civic, 3 Series..." />
+                                    <span asp-validation-for="Vehicle.Model" class="text-danger small d-block mt-1"></span>
+                                </div>
+
+                                <!-- Year -->
+                                <div class="mb-4">
+                                    <label asp-for="Vehicle.Year" class="form-label fw-bold">Năm sản xuất <span
+                                        class="text-danger">*</span></label>
+                                        <input asp-for="Vehicle.Year" class="form-control form-control-lg" type="number" min="1990"
+                                               max="2099" placeholder="2024" />
+                                        <span asp-validation-for="Vehicle.Year" class="text-danger small d-block mt-1"></span>
+                                    </div>
+
+                                    <!-- License Plate -->
+                                    <div class="mb-4">
+                                        <label asp-for="Vehicle.LicensePlate" class="form-label fw-bold">Biển số xe <span
+                                            class="text-danger">*</span></label>
+                                            <input asp-for="Vehicle.LicensePlate" class="form-control form-control-lg text-uppercase"
+                                                   placeholder="VD: 29A-12345" />
+                                            <span asp-validation-for="Vehicle.LicensePlate"
+                                                  class="text-danger small d-block mt-1"></span>
+                                        </div>
+
+                                        <!-- Mileage -->
+                                        <div class="mb-4">
+                                            <label asp-for="Vehicle.Mileage" class="form-label fw-bold">Số km hiện tại <span
+                                                class="text-danger">*</span></label>
+                                                <input asp-for="Vehicle.Mileage" class="form-control form-control-lg" type="number" min="0"
+                                                       placeholder="50000" />
+                                                <span asp-validation-for="Vehicle.Mileage" class="text-danger small d-block mt-1"></span>
+                                            </div>
+
+                                            <!-- Submit -->
+                                            <div class="d-grid gap-2 gap-sm-3 d-sm-flex pt-3">
+                                                <button type="submit" class="btn btn-success btn-lg">
+                                                    <i class="fas fa-plus me-2"></i>Thêm xe
+                                                </button>
+                                                <a asp-page="./Vehicles" class="btn btn-outline-secondary btn-lg">
+                                                    <i class="fas fa-times me-2"></i>Hủy
+                                                </a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Info Box -->
+                                <div class="alert alert-info mt-4" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Lưu ý:</strong> Hãy nhập thông tin chính xác để quản lý xe hiệu quả.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @section Scripts {
+                        <partial name="_ValidationScriptsPartial" />
+                    }

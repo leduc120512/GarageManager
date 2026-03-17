@@ -1,0 +1,61 @@
+@page "{id:int}"
+@model AutoGarageManager.Pages.Admin.Vehicles.EditModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Sửa Xe";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-0">
+        <h2 class="h5 mb-0">Sửa Xe</h2>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <input asp-for="Vehicle.Id" type="hidden" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Vehicle.LicensePlate" class="form-label">Biển số</label>
+                    <input asp-for="Vehicle.LicensePlate" class="form-control" />
+                    <span asp-validation-for="Vehicle.LicensePlate" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Vehicle.Make" class="form-label">Hãng</label>
+                    <input asp-for="Vehicle.Make" class="form-control" />
+                    <span asp-validation-for="Vehicle.Make" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Vehicle.Model" class="form-label">Model</label>
+                    <input asp-for="Vehicle.Model" class="form-control" />
+                    <span asp-validation-for="Vehicle.Model" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Vehicle.Year" class="form-label">Năm sản xuất</label>
+                    <input asp-for="Vehicle.Year" class="form-control" type="number" />
+                    <span asp-validation-for="Vehicle.Year" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Vehicle.Mileage" class="form-label">Số km</label>
+                    <input asp-for="Vehicle.Mileage" class="form-control" type="number" />
+                    <span asp-validation-for="Vehicle.Mileage" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Vehicle.CustomerId" class="form-label">Khách hàng</label>
+                    <select asp-for="Vehicle.CustomerId" class="form-select" asp-items="Model.CustomerOptions">
+                        <option value="">-- Chọn khách hàng --</option>
+                    </select>
+                    <span asp-validation-for="Vehicle.CustomerId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <a asp-page="../Vehicles" class="btn btn-secondary ms-2">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

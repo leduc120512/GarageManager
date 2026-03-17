@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoGarageManager</title>
+    <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AutoGarageManager.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+            <div class="container">
+                <a class="navbar-brand fw-bold" asp-area="" asp-page="/Index">
+                    <i class="fas fa-car me-2"></i>Auto Garage Manager
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Index">
+                                <i class="fas fa-home me-1"></i>Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services">
+                                <i class="fas fa-tools me-1"></i>Dịch vụ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">
+                                <i class="fas fa-envelope me-1"></i>Liên hệ
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-2">
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <div class="d-flex align-items-center text-white me-2">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span class="me-3">@User.Identity.Name</span>
+                            </div>
+
+                            <a class="btn btn-outline-light btn-sm me-1" asp-page="/Profile">
+                                <i class="fas fa-user-edit me-1"></i>Hồ sơ
+                            </a>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-outline-light btn-sm" asp-page="/Admin/Index">
+                                    <i class="fas fa-user-shield me-1"></i>Admin
+                                </a>
+                            }
+                            @if (User.IsInRole("Accountant"))
+                            {
+                                <a class="btn btn-outline-light btn-sm" asp-page="/Accountant/Index">
+                                    <i class="fas fa-calculator me-1"></i>Kế toán
+                                </a>
+                            }
+                            @if (User.IsInRole("Mechanic"))
+                            {
+                                <a class="btn btn-outline-light btn-sm" asp-page="/Mechanic/Index">
+                                    <i class="fas fa-tools me-1"></i>Thợ sửa
+                                </a>
+                            }
+                            @if (User.IsInRole("Customer"))
+                            {
+                                <a class="btn btn-outline-light btn-sm" asp-page="/Customer/Index">
+                                    <i class="fas fa-user me-1"></i>Khách hàng
+                                </a>
+                            }
+
+                            <form method="post" asp-page="/Logout" class="d-inline">
+                                <button type="submit" class="btn btn-outline-light btn-sm">
+                                    <i class="fas fa-sign-out-alt me-1"></i>Đăng xuất
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-light btn-sm" asp-page="/Login">
+                                <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập
+                            </a>
+                            <a class="btn btn-light btn-sm" asp-page="/Register">
+                                <i class="fas fa-user-plus me-1"></i>Đăng ký
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Auto Garage Manager</h5>
+                    <p>Hệ thống quản lý garage tự động chuyên nghiệp.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2026 - AutoGarageManager</p>
+                    <a asp-area="" asp-page="/Privacy" class="text-light">Chính sách bảo mật</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+@page
+@model AutoGarageManager.Pages.Admin.RemindersModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Nhắc Bảo Dưỡng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Nhắc Bảo Dưỡng</h2>
+    <a class="btn btn-dark" href="#">Thêm nhắc mới</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Xe</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày nhắc</th>
+                    <th>Loại</th>
+                    <th style="width: 140px;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>29A-12345</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>2026-04-01</td>
+                    <td>Bảo dưỡng định kỳ</td>
+                    <td>
+                        <a class="text-decoration-none" href="#">Sửa</a>
+                        <span class="mx-1">|</span>
+                        <a class="text-danger text-decoration-none" href="#">Xóa</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>30B-67890</td>
+                    <td>Trần Thị B</td>
+                    <td>2026-04-10</td>
+                    <td>Thay dầu</td>
+                    <td>
+                        <a class="text-decoration-none" href="#">Sửa</a>
+                        <span class="mx-1">|</span>
+                        <a class="text-danger text-decoration-none" href="#">Xóa</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

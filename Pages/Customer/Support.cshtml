@@ -1,0 +1,344 @@
+@page
+@model AutoGarageManager.Pages.Customer.SupportModel
+@{
+    ViewData["Title"] = "Hỗ trợ";
+    Layout = "~/Pages/Customer/_CustomerLayout.cshtml";
+}
+
+<div class="py-4 px-3 px-lg-4">
+    <!-- Header -->
+    <div class="mb-5">
+        <h1 class="display-6 fw-bold mb-2">💬 Yêu cầu hỗ trợ</h1>
+        <p class="text-muted lead">Liên hệ với chúng tôi nếu bạn cần hỗ trợ hoặc có bất kỳ câu hỏi nào</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @Model.StatusMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-paper-plane me-2 text-primary"></i>
+                        Gửi yêu cầu hỗ trợ
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        <!-- Subject -->
+                        <div class="mb-4">
+                            <label asp-for="Input.Subject" class="form-label fw-bold">Chủ đề <span class="text-danger">*</span></label>
+                            <select asp-for="Input.Subject" class="form-select form-select-lg">
+                                <option value="">-- Chọn chủ đề --</option>
+                                <option value="Lịch hẹn">
+                                    <i class="fas fa-calendar me-2"></i>Lịch hẹn
+                                </option>
+                                <option value="Bảo dưỡng">
+                                    <i class="fas fa-tools me-2"></i>Bảo dưỡng
+                                </option>
+                                <option value="Hóa đơn">
+                                    <i class="fas fa-receipt me-2"></i>Hóa đơn
+                                </option>
+                                <option value="Thanh toán">
+                                    <i class="fas fa-credit-card me-2"></i>Thanh toán
+                                </option>
+                                <option value="Khác">
+                                    <i class="fas fa-question-circle me-2"></i>Khác
+                                </option>
+                            </select>
+                            <span asp-validation-for="Input.Subject" class="text-danger small d-block mt-1"></span>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="mb-4">
+                            <label asp-for="Input.Message" class="form-label fw-bold">Nội dung <span class="text-danger">*</span></label>
+                            <textarea asp-for="Input.Message" class="form-control" rows="6"
+                                      placeholder="Mô tả chi tiết vấn đề bạn cần hỗ trợ..."
+                                      style="min-height: 150px; resize: vertical;"></textarea>
+                            <small class="text-muted d-block mt-1">Vui lòng mô tả chi tiết vấn đề để chúng tôi có thể hỗ trợ tốt hơn.</small>
+                            <span asp-validation-for="Input.Message" class="text-danger small d-block mt-1"></span>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-grid gap-2 gap-sm-3 d-sm-flex">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Gửi yêu cầu
+                            </button>
+                            <a asp-page="./Index" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Info Sidebar -->
+        <div class="col-lg-4">
+            <!-- Quick Contact -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2 text-info"></i>
+                        Thông tin liên hệ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="icon-circle bg-primary text-white" style="width: 40px; height: 40px; flex-shrink: 0;">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Điện thoại</h6>
+                                <p class="mb-0">
+                                    <a href="tel:1900xxxx" class="text-decoration-none">1900-XXXX</a>
+                                </p>
+                                <small class="text-muted">Gọi ngay để được hỗ trợ nhanh</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="icon-circle bg-success text-white" style="width: 40px; height: 40px; flex-shrink: 0;">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Email</h6>
+                                <p class="mb-0">
+                                    <a href="mailto:support@autogarage.com" class="text-decoration-none">support@autogarage.com</a>
+                                </p>
+                                <small class="text-muted">Phản hồi trong 24 giờ</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="icon-circle bg-warning text-white" style="width: 40px; height: 40px; flex-shrink: 0;">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Giờ làm việc</h6>
+                                <p class="mb-0">8:00 - 18:00</p>
+                                <small class="text-muted">Thứ 2 - Chủ nhật</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-0">
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="icon-circle bg-danger text-white" style="width: 40px; height: 40px; flex-shrink: 0;">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Địa chỉ</h6>
+                                <p class="mb-0">123 Đường ABC</p>
+                                <small class="text-muted">Quận XYZ, TP.HCM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-question-circle me-2 text-warning"></i>
+                        Câu hỏi thường gặp
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="accordion accordion-flush" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Làm sao để tạo lịch hẹn?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Bạn có thể liên hệ trực tiếp hoặc gửi yêu cầu thông qua form hỗ trợ.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Thời gian xử lý là bao lâu?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Chúng tôi sẽ phản hồi trong vòng 24 giờ làm việc.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Bảo hành như thế nào?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Tất cả dịch vụ được bảo hành 6 tháng. Liên hệ để biết thêm chi tiết.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Tickets History -->
+    @if (Model.Tickets.Any())
+    {
+        <hr class="my-5">
+        <div class="row g-4">
+            <div class="col-12">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-history me-2 text-primary"></i>
+                    Lịch sử yêu cầu hỗ trợ
+                </h5>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>Chủ đề</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ưu tiên</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.Tickets)
+                                {
+                                    <tr>
+                                        <td>@ticket.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@ticket.Subject</td>
+                                        <td>
+                                            @if (ticket.Status == "Pending")
+                                            {
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="fas fa-hourglass-half me-1"></i>Chờ xử lý
+                                                </span>
+                                            }
+                                            else if (ticket.Status == "InProgress")
+                                            {
+                                                <span class="badge bg-info">
+                                                    <i class="fas fa-spinner me-1"></i>Đang xử lý
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check-circle me-1"></i>Hoàn thành
+                                                </span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (ticket.Priority == "Urgent")
+                                            {
+                                                <span class="badge bg-danger">Khẩn cấp</span>
+                                            }
+                                            else if (ticket.Priority == "High")
+                                            {
+                                                <span class="badge bg-warning text-dark">Cao</span>
+                                            }
+                                            else if (ticket.Priority == "Normal")
+                                            {
+                                                <span class="badge bg-info">Bình thường</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Thấp</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#ticketModal@ticket.Id">
+                                                Chi tiết
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Ticket Detail Modal -->
+                                    <div class="modal fade" id="ticketModal@ticket.Id" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">@ticket.Subject</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label class="text-muted small fw-bold mb-1 d-block">Nội dung</label>
+                                                        <p>@ticket.Message</p>
+                                                    </div>
+                                                    @if (!string.IsNullOrEmpty(ticket.Response))
+                                                    {
+                                                        <div class="mb-3 alert alert-light">
+                                                            <label class="text-muted small fw-bold mb-1 d-block">Phản hồi từ chúng tôi</label>
+                                                            <p>@ticket.Response</p>
+                                                            <small class="text-muted">@ticket.RespondedAt?.ToString("dd/MM/yyyy HH:mm")</small>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .icon-circle {
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+
+    .form-select-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(13, 110, 253, 0.1) !important;
+        color: #0d6efd !important;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: #0d6efd;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

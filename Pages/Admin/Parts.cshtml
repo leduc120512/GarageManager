@@ -1,0 +1,51 @@
+@page
+@model AutoGarageManager.Pages.Admin.PartsModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Phụ Tùng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Phụ Tùng</h2>
+    <a class="btn btn-dark" href="#">+ Thêm Phụ Tùng</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên phụ tùng</th>
+                    <th>Loại</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th style="width: 140px;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lọc gió</td>
+                    <td>Bảo dưỡng</td>
+                    <td>50</td>
+                    <td>120.000₫</td>
+                    <td>
+                        <a class="text-decoration-none" href="#">Sửa</a>
+                        <span class="mx-1">|</span>
+                        <a class="text-danger text-decoration-none" href="#">Xóa</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Nhớt động cơ</td>
+                    <td>Thay thế</td>
+                    <td>28</td>
+                    <td>180.000₫</td>
+                    <td>
+                        <a class="text-decoration-none" href="#">Sửa</a>
+                        <span class="mx-1">|</span>
+                        <a class="text-danger text-decoration-none" href="#">Xóa</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

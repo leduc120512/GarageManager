@@ -1,0 +1,198 @@
+@page
+@model AutoGarageManager.Pages.Mechanic.CreateServiceModel
+@{
+    Layout = "/Pages/Mechanic/_MechanicLayout.cshtml";
+    ViewData["Title"] = "Tạo lần sửa chữa";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-0">
+                <h2 class="h5 mb-0">Tạo lần sửa chữa</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" asp-for="VehicleId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Xe</label>
+                        <input class="form-control" value="@Model.Vehicle?.LicensePlate - @Model.Vehicle?.Model" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Dịch vụ thực hiện</label>
+                        <div class="row">
+                            @foreach (var service in Model.Services)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input service-checkbox" type="checkbox"
+                                               value="@service.Id" id="service_@service.Id" />
+                                        <label class="form-check-label" for="service_@service.Id">
+                                            @service.Name - @service.Price.ToString("N0")₫
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Phụ tùng sử dụng</label>
+                        <div id="parts-container">
+                            <div class="parts-row mb-2">
+                                <div class="row g-2 align-items-end">
+                                    <div class="col-md-5">
+                                        <select class="form-select part-select">
+                                            <option value="">Chọn phụ tùng</option>
+                                            @foreach (var part in Model.Parts)
+                                            {
+                                                <option value="@part.Id" data-price="@part.Price">@part.Name (@part.Quantity còn lại)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control quantity-input" placeholder="SL" min="1" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control price-display" readonly placeholder="Giá" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger btn-sm remove-part">Xóa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="add-part">+ Thêm phụ tùng</button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TotalCost" class="form-label"></label>
+                        <input asp-for="TotalCost" class="form-control" readonly />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Lưu lần sửa</button>
+                    <a asp-page="/Mechanic/ServiceHistory" asp-route-vehicleId="@Model.VehicleId" class="btn btn-secondary">Hủy</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-0">
+                <h2 class="h6 mb-0">Tổng kết</h2>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tổng dịch vụ:</span>
+                    <span id="services-total">0₫</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tổng phụ tùng:</span>
+                    <span id="parts-total">0₫</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold">
+                    <span>Tổng cộng:</span>
+                    <span id="grand-total">0₫</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const partsContainer = document.getElementById('parts-container');
+            const addPartBtn = document.getElementById('add-part');
+            const servicesTotal = document.getElementById('services-total');
+            const partsTotal = document.getElementById('parts-total');
+            const grandTotal = document.getElementById('grand-total');
+            const totalCostInput = document.getElementById('TotalCost');
+
+            // Add new part row
+            addPartBtn.addEventListener('click', function() {
+                const template = document.querySelector('.parts-row').cloneNode(true);
+                template.querySelector('.part-select').value = '';
+                template.querySelector('.quantity-input').value = '';
+                template.querySelector('.price-display').value = '';
+                partsContainer.appendChild(template);
+                attachPartEvents(template);
+            });
+
+            // Attach events to part rows
+            function attachPartEvents(row) {
+                const select = row.querySelector('.part-select');
+                const quantity = row.querySelector('.quantity-input');
+                const priceDisplay = row.querySelector('.price-display');
+                const removeBtn = row.querySelector('.remove-part');
+
+                select.addEventListener('change', function() {
+                    const option = select.options[select.selectedIndex];
+                    const price = option.getAttribute('data-price') || 0;
+                    priceDisplay.value = formatCurrency(price);
+                    calculateTotals();
+                });
+
+                quantity.addEventListener('input', calculateTotals);
+                removeBtn.addEventListener('click', function() {
+                    if (document.querySelectorAll('.parts-row').length > 1) {
+                        row.remove();
+                        calculateTotals();
+                    }
+                });
+            }
+
+            // Attach events to existing rows
+            document.querySelectorAll('.parts-row').forEach(attachPartEvents);
+
+            // Service checkboxes
+            document.querySelectorAll('.service-checkbox').forEach(cb => {
+                cb.addEventListener('change', calculateTotals);
+            });
+
+            function calculateTotals() {
+                let servicesSum = 0;
+                document.querySelectorAll('.service-checkbox:checked').forEach(cb => {
+                    const serviceId = cb.value;
+                    const service = @Html.Raw(Json.Serialize(Model.Services));
+                    const selectedService = service.find(s => s.id == serviceId);
+                    if (selectedService) {
+                        servicesSum += selectedService.price;
+                    }
+                });
+
+                let partsSum = 0;
+                document.querySelectorAll('.parts-row').forEach(row => {
+                    const select = row.querySelector('.part-select');
+                    const quantity = row.querySelector('.quantity-input');
+                    if (select.value && quantity.value) {
+                        const option = select.options[select.selectedIndex];
+                        const price = parseFloat(option.getAttribute('data-price') || 0);
+                        const qty = parseInt(quantity.value || 0);
+                        partsSum += price * qty;
+                    }
+                });
+
+                const total = servicesSum + partsSum;
+                servicesTotal.textContent = formatCurrency(servicesSum);
+                partsTotal.textContent = formatCurrency(partsSum);
+                grandTotal.textContent = formatCurrency(total);
+                totalCostInput.value = total;
+            }
+
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('vi-VN').format(amount) + '₫';
+            }
+        });
+    </script>
+}

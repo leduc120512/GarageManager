@@ -1,0 +1,188 @@
+@page
+@model AutoGarageManager.Pages.Customer.VehiclesModel
+@{
+    ViewData["Title"] = "Xe của tôi";
+    Layout = "~/Pages/Customer/_CustomerLayout.cshtml";
+}
+
+<div class="py-4 px-3 px-lg-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-6 fw-bold mb-2">🚗 Xe của tôi</h1>
+            <p class="text-muted lead">Quản lý danh sách xe của bạn</p>
+        </div>
+        <a class="btn btn-primary btn-lg" asp-page="./CreateVehicle">
+            <i class="fas fa-plus me-2"></i>Thêm xe mới
+        </a>
+    </div>
+
+    @if (!Model.Vehicles.Any())
+    {
+        <!-- Empty State -->
+        <div class="card border-0 shadow-sm text-center py-5">
+            <div class="card-body">
+                <div style="font-size: 4rem; color: #0d6efd; margin-bottom: 1rem;">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Chưa có xe nào</h4>
+                <p class="text-muted mb-4">Bạn chưa đăng ký xe nào trong hệ thống. Hãy thêm xe của bạn ngay để bắt đầu quản
+                    lý.</p>
+                    <a class="btn btn-primary" asp-page="./CreateVehicle">
+                        <i class="fas fa-plus me-2"></i>Thêm chiếc xe đầu tiên
+                    </a>
+                </div>
+            </div>
+        }
+    else
+        {
+            <!-- Legend/Filter Options -->
+            <div class="mb-4 d-flex gap-2 flex-wrap">
+                <span class="badge bg-light text-dark px-3 py-2">
+                    <i class="fas fa-info-circle me-2"></i>Tổng cộng: @Model.Vehicles.Count() xe
+                </span>
+            </div>
+
+            <!-- Vehicles Grid -->
+            <div class="row g-4">
+                @foreach (var vehicle in Model.Vehicles)
+                {
+                    var lastService = Model.LastServices.FirstOrDefault(ls => ls.VehicleId == vehicle.Id);
+                    var needsMaintenance = lastService == null || (DateTime.Now - lastService.ServiceDate).TotalDays > 30;
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card border-0 shadow-sm vehicle-card h-100 position-relative overflow-hidden">
+                            @if (needsMaintenance)
+                            {
+                                <div class="position-absolute top-0 end-0 p-3">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>Cần bảo dưỡng
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="position-absolute top-0 end-0 p-3">
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check-circle me-1"></i>Tốt
+                                    </span>
+                                </div>
+                            }
+
+                            <div class="card-body">
+                                <!-- Vehicle Icon/Image -->
+                                <div class="text-center mb-3" style="font-size: 3rem; color: #0d6efd;">
+                                    <i class="fas fa-car"></i>
+                                </div>
+
+                                <!-- Vehicle Info -->
+                                <div class="text-center mb-4">
+                                    <h5 class="fw-bold mb-2">@vehicle.Make @vehicle.Model</h5>
+                                    <div class="mb-3">
+                                        <span class="badge bg-light text-dark px-3 py-2">
+                                            <i class="fas fa-id-card me-2"></i>@vehicle.LicensePlate
+                                        </span>
+                                    </div>
+                                    <p class="text-muted mb-0 small">Năm sản xuất: <strong>@vehicle.Year</strong></p>
+                                </div>
+
+                                <!-- Vehicle Stats -->
+                                <div class="row g-3 mb-4 text-center">
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded">
+                                            <p class="text-muted small mb-1">Km hiện tại</p>
+                                            <p class="fw-bold mb-0">@vehicle.Mileage km</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-2 bg-light rounded">
+                                            <p class="text-muted small mb-1">Lần sửa cuối</p>
+                                            <p class="fw-bold mb-0">
+                                                @if (lastService != null)
+                                                {
+                                                    @lastService.ServiceDate.ToString("dd/MM")
+                                                }
+                                                else
+                                                {
+                                                    <span class="small">Chưa sửa</span>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="alert alert-light border small mb-4">
+                                    <p class="mb-0">
+                                        <strong>Tình trạng:</strong>
+                                        @if (needsMaintenance)
+                                        {
+                                            <span class="text-warning">Cần bảo dưỡng sớm</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-success">Đang hoạt động tốt</span>
+                                        }
+                                    </p>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-primary btn-sm" asp-page="./ServiceHistory" asp-route-vehicleId="@vehicle.Id">
+                                        <i class="fas fa-history me-2"></i>Xem lịch sử
+                                    </a>
+                                    <a class="btn btn-outline-primary btn-sm" asp-page="./EditVehicle" asp-route-id="@vehicle.Id">
+                                        <i class="fas fa-edit me-2"></i>Chỉnh sửa
+                                    </a>
+                                    <a class="btn btn-outline-danger btn-sm" asp-page="./DeleteVehicle" asp-route-id="@vehicle.Id"
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa xe này không?');">
+                                        <i class="fas fa-trash-alt me-2"></i>Xóa
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <style>
+        .vehicle-card {
+            transition: all 0.3s ease;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(13, 110, 253, 0.2) !important;
+        }
+
+        .vehicle-card .card-body {
+            position: relative;
+        }
+
+        .vehicle-card .badge {
+            animation: vehicleSlideIn 0.3s ease;
+        }
+
+        @@keyframes vehicleSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .vehicle-card .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+        }
+
+        .vehicle-card .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+    </style>

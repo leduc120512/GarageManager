@@ -1,0 +1,83 @@
+@page
+@model AutoGarageManager.Pages.Mechanic.VehiclesModel
+@{
+    Layout = "/Pages/Mechanic/_MechanicLayout.cshtml";
+    ViewData["Title"] = "Quản lý xe";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Quản lý xe</h2>
+    <div>
+        <input type="text" id="searchInput" class="form-control d-inline-block w-auto" placeholder="Tìm biển số xe..." />
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0" id="vehiclesTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Biển số</th>
+                    <th>Model</th>
+                    <th>Chủ xe</th>
+                    <th>Lần sửa cuối</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vehicle in Model.Vehicles)
+                {
+                    <tr>
+                        <td>@vehicle.LicensePlate</td>
+                        <td>@vehicle.Model</td>
+                        <td>@vehicle.Customer.FullName</td>
+                        <td>
+                            @{
+                                var lastService = Model.LastServices.FirstOrDefault(ls => ls.VehicleId == vehicle.Id);
+                            }
+                            @if (lastService != null)
+                            {
+                                @lastService.ServiceDate.ToString("dd/MM/yyyy")
+                            }
+                            else
+                            {
+                                <span class="text-muted">Chưa sửa</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="text-decoration-none me-2" asp-page="/Mechanic/ServiceHistory" asp-route-vehicleId="@vehicle.Id">Lịch sử</a>
+                            <a class="text-decoration-none" asp-page="/Mechanic/CreateService" asp-route-vehicleId="@vehicle.Id">Sửa xe</a>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Vehicles.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Chưa có xe nào</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#vehiclesTable tbody tr');
+
+            rows.forEach(row => {
+                const licensePlate = row.cells[0].textContent.toLowerCase();
+                const model = row.cells[1].textContent.toLowerCase();
+                const owner = row.cells[2].textContent.toLowerCase();
+
+                if (licensePlate.includes(filter) || model.includes(filter) || owner.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}

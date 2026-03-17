@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model AutoGarageManager.Pages.Admin.Customers.DeleteModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Xóa Khách Hàng";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-0">
+        <h2 class="h5 mb-0">Xác nhận xóa khách hàng</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Họ và tên</dt>
+            <dd class="col-sm-9">@Model.Customer.FullName</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Customer.Email</dd>
+
+            <dt class="col-sm-3">Điện thoại</dt>
+            <dd class="col-sm-9">@Model.Customer.Phone</dd>
+        </dl>
+
+        <form method="post">
+            <input asp-for="Customer.Id" type="hidden" />
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <a asp-page="../Customers" class="btn btn-secondary ms-2">Hủy</a>
+        </form>
+    </div>
+</div>

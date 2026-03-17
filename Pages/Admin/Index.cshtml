@@ -1,0 +1,63 @@
+@page "/Admin/Index"
+@model AutoGarageManager.Pages.Admin.IndexModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Tổng Quan";
+}
+
+<div class="admin-dashboard">
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Xe đang sửa</div>
+                <div class="admin-stat-value">24</div>
+                <div class="admin-stat-dot bg-primary"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Khách hàng</div>
+                <div class="admin-stat-value">156</div>
+                <div class="admin-stat-dot bg-success"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Phụ tùng</div>
+                <div class="admin-stat-value">342</div>
+                <div class="admin-stat-dot bg-warning"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="admin-stat-card">
+                <div class="admin-stat-label">Nhắc bảo dưỡng</div>
+                <div class="admin-stat-value">8</div>
+                <div class="admin-stat-dot bg-danger"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-0">
+            <h2 class="h6 mb-0">Hoạt Động Gần Đây</h2>
+        </div>
+        <div class="list-group list-group-flush">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Xe 29A 12345 vừa hoàn thành sửa chữa</span>
+                <span class="text-muted small">5 phút trước</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Nhập kho 50 lọc gió</span>
+                <span class="text-muted small">1 giờ trước</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Khách hàng Nguyễn Văn A đặt lịch bảo dưỡng</span>
+                <span class="text-muted small">2 giờ trước</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Nhân viên Trần B hoàn thành thay dầu xe 30B-67890</span>
+                <span class="text-muted small">3 giờ trước</span>
+            </div>
+        </div>
+    </div>
+</div>

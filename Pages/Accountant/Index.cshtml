@@ -1,0 +1,89 @@
+@page "/Accountant/Index"
+@model AutoGarageManager.Pages.Accountant.IndexModel
+@{
+    Layout = "/Pages/Accountant/_AccountantLayout.cshtml";
+    ViewData["Title"] = "Dashboard Kế toán";
+}
+
+<div class="accountant-dashboard">
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="accountant-stat-card">
+                <div class="accountant-stat-label">Doanh thu tháng</div>
+                <div class="accountant-stat-value">@Model.MonthlyRevenue.ToString("N0")₫</div>
+                <div class="accountant-stat-dot bg-success"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="accountant-stat-card">
+                <div class="accountant-stat-label">Hóa đơn hôm nay</div>
+                <div class="accountant-stat-value">@Model.TodayInvoices</div>
+                <div class="accountant-stat-dot bg-primary"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="accountant-stat-card">
+                <div class="accountant-stat-label">Tổng khách hàng</div>
+                <div class="accountant-stat-value">@Model.TotalCustomers</div>
+                <div class="accountant-stat-dot bg-info"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="accountant-stat-card">
+                <div class="accountant-stat-label">Phụ tùng tồn kho</div>
+                <div class="accountant-stat-value">@Model.TotalParts</div>
+                <div class="accountant-stat-dot bg-warning"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-0">
+                    <h2 class="h6 mb-0">Hóa đơn gần đây</h2>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach (var invoice in Model.RecentInvoices)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">@invoice.Vehicle.LicensePlate</div>
+                                <small class="text-muted">@invoice.Description</small>
+                            </div>
+                            <span class="badge bg-success">@invoice.TotalCost.ToString("N0")₫</span>
+                        </div>
+                    }
+                    @if (!Model.RecentInvoices.Any())
+                    {
+                        <div class="list-group-item text-center text-muted">Không có hóa đơn nào</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-0">
+                    <h2 class="h6 mb-0">Phụ tùng sắp hết</h2>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach (var part in Model.LowStockParts)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">@part.Name</div>
+                                <small class="text-muted">@part.Category</small>
+                            </div>
+                            <span class="badge bg-danger">@part.Quantity còn lại</span>
+                        </div>
+                    }
+                    @if (!Model.LowStockParts.Any())
+                    {
+                        <div class="list-group-item text-center text-muted">Không có phụ tùng nào sắp hết</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

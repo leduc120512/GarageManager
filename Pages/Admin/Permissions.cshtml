@@ -1,0 +1,53 @@
+@page
+@model AutoGarageManager.Pages.Admin.PermissionsModel
+@{
+    Layout = "/Pages/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý quyền";
+}
+
+<div class="admin-permissions">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0">Quản lý quyền</h2>
+        <a class="btn btn-outline-primary" asp-page="./Index">Quay lại</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Danh sách vai trò</h5>
+                    <ul class="list-group">
+                        @foreach (var role in Model.Roles)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@role.Name</span>
+                                <span class="badge bg-secondary">@role.UserCount người dùng</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Người dùng theo vai trò</h5>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <div class="mb-3">
+                            <h6 class="mb-1">@role.Name</h6>
+                            <ul class="list-group">
+                                @foreach (var user in role.Users)
+                                {
+                                    <li class="list-group-item">
+                                        @user.UserName (@user.Email)
+                                    </li>
+                                }
+                                @if (!role.Users.Any())
+                                {
+                                    <li class="list-group-item text-muted">Không có người dùng.</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

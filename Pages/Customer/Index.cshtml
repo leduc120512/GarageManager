@@ -1,0 +1,286 @@
+@page "/Customer/Index"
+@model AutoGarageManager.Pages.Customer.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Pages/Customer/_CustomerLayout.cshtml";
+}
+
+<div class="py-4 px-3 px-lg-4">
+    <!-- Header Section -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+                <h1 class="display-6 fw-bold mb-1">👋 Xin chào, <span class="text-primary">@Model.CustomerName</span>
+                </h1>
+                <p class="text-muted lead mb-0">Chào mừng bạn trở lại. Dưới đây là tóm tắt thông tin của bạn.</p>
+            </div>
+            <span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">
+                <i class="fas fa-verified me-2"></i>Xác thực
+            </span>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <!-- Vehicles Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden dashboard-card">
+                <div class="position-absolute top-0 end-0 opacity-10" style="font-size: 4rem; margin: -10px -10px 0 0;">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div>
+                            <h6 class="text-uppercase text-muted fw-bold mb-2"
+                                style="font-size: 0.75rem; letter-spacing: 1px;">Xe của bạn</h6>
+                            <h2 class="mb-0 fw-bold" style="color: #0d6efd; font-size: 2.5rem;">@Model.VehicleCount</h2>
+                        </div>
+                        <div class="icon-circle bg-primary text-white"
+                             style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-car"></i>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-3 small">
+                        @if (Model.VehicleCount == 0)
+                        {
+                            <span>Chưa có xe nào. <a href="./Vehicles" class="text-primary">Thêm xe mới</a></span>
+                        }
+                        else
+                        {
+                            <span>@Model.VehicleCount xe đang được quản lý</span>
+                        }
+                    </p>
+                    <a href="./Vehicles" class="btn btn-sm btn-primary w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Quản lý xe
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reminders Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden dashboard-card">
+                <div class="position-absolute top-0 end-0 opacity-10" style="font-size: 4rem; margin: -10px -10px 0 0;">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div>
+                            <h6 class="text-uppercase text-muted fw-bold mb-2"
+                                style="font-size: 0.75rem; letter-spacing: 1px;">Nhắc bảo dưỡng</h6>
+                            <h2 class="mb-0 fw-bold" style="color: #28a745; font-size: 2.5rem;">@Model.ReminderCount
+                            </h2>
+                        </div>
+                        <div class="icon-circle bg-success text-white"
+                             style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-3 small">
+                        @if (Model.ReminderCount == 0)
+                        {
+                            <span>Không có nhắc nào đang chờ xử lý</span>
+                        }
+                        else
+                        {
+                            <span>@Model.ReminderCount nhắc đang chờ xử lý</span>
+                        }
+                    </p>
+                    <a href="./Reminders" class="btn btn-sm btn-success w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Xem nhắc nhở
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Action Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100 position-relative overflow-hidden dashboard-card">
+                <div class="position-absolute top-0 end-0 opacity-10" style="font-size: 4rem; margin: -10px -10px 0 0;">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div>
+                            <h6 class="text-uppercase text-muted fw-bold mb-2"
+                                style="font-size: 0.75rem; letter-spacing: 1px;">Hành động nhanh</h6>
+                        </div>
+                        <div class="icon-circle bg-info text-white"
+                             style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-3 small">Thêm xe mới hoặc xem lịch sử sửa chữa</p>
+                    <div class="d-grid gap-2">
+                        <a href="./CreateVehicle" class="btn btn-sm btn-outline-info">
+                            <i class="fas fa-plus me-2"></i>Thêm xe
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row g-4">
+        <!-- Information Card -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-lightbulb text-warning"></i>
+                        Mẹo sử dụng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-primary-light text-primary"
+                                         style="width: 40px; height: 40px;">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Quản lý xe hiệu quả</h6>
+                                    <p class="small text-muted mb-0">Cập nhật thông tin xe và dữ liệu bảo dưỡng định kỳ
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-success-light text-success"
+                                         style="width: 40px; height: 40px;">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Không bỏ lỡ lịch</h6>
+                                    <p class="small text-muted mb-0">Kiểm tra nhắc bảo dưỡng thường xuyên</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-info-light text-info" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-tools"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Theo dõi dịch vụ</h6>
+                                    <p class="small text-muted mb-0">Xem lịch sử sửa chữa và bảo dưỡng xe</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="flex-shrink-0">
+                                    <div class="icon-circle bg-warning-light text-warning"
+                                         style="width: 40px; height: 40px;">
+                                        <i class="fas fa-headset"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Cần hỗ trợ?</h6>
+                                    <p class="small text-muted mb-0">Liên hệ với đội hỗ trợ bất kỳ lúc nào</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Info Card -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-user-circle text-primary"></i>
+                        Thông tin tài khoản
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="text-uppercase text-muted small fw-bold mb-2 d-block">Email</label>
+                        <p class="mb-0 fw-600">@Model.Email</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-uppercase text-muted small fw-bold mb-2 d-block">Vai trò</label>
+                        <span class="badge bg-primary-light text-primary px-3 py-2 rounded-pill">
+                            <i class="fas fa-user me-1"></i>Khách hàng
+                        </span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-uppercase text-muted small fw-bold mb-2 d-block">Tổng xe</label>
+                        <p class="mb-0 h5 fw-bold text-primary">@Model.VehicleCount chiếc</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="text-uppercase text-muted small fw-bold mb-2 d-block">Nhắc chờ xử lý</label>
+                        <p class="mb-0 h5 fw-bold text-success">@Model.ReminderCount</p>
+                    </div>
+                    <hr>
+                    <a href="/Profile" class="btn btn-sm btn-outline-primary w-100">
+                        <i class="fas fa-edit me-2"></i>Chỉnh sửa hồ sơ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-card {
+        transition: all 0.3s ease;
+    }
+
+    .dashboard-card:hover {
+        box-shadow: 0 15px 40px rgba(13, 110, 253, 0.15) !important;
+        transform: translateY(-5px);
+    }
+
+    .icon-circle {
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    .bg-primary-light {
+        background-color: rgba(13, 110, 253, 0.15) !important;
+    }
+
+    .bg-success-light {
+        background-color: rgba(40, 167, 69, 0.15) !important;
+    }
+
+    .bg-info-light {
+        background-color: rgba(23, 162, 184, 0.15) !important;
+    }
+
+    .bg-warning-light {
+        background-color: rgba(255, 193, 7, 0.15) !important;
+    }
+
+    .text-primary-light {
+        color: #0d6efd;
+    }
+
+    .text-success-light {
+        color: #28a745;
+    }
+
+    .text-info-light {
+        color: #17a2b8;
+    }
+
+    .text-warning-light {
+        color: #ffc107;
+    }
+</style>
+</div>

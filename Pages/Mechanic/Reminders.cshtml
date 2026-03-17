@@ -1,0 +1,53 @@
+@page
+@model AutoGarageManager.Pages.Mechanic.RemindersModel
+@{
+    Layout = "/Pages/Mechanic/_MechanicLayout.cshtml";
+    ViewData["Title"] = "Nhắc bảo dưỡng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0">Nhắc bảo dưỡng</h2>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Xe</th>
+                    <th>Chủ xe</th>
+                    <th>Nội dung</th>
+                    <th>Ngày nhắc</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reminder in Model.Reminders)
+                {
+                    <tr>
+                        <td>@reminder.Vehicle.LicensePlate</td>
+                        <td>@reminder.Vehicle.Customer.FullName</td>
+                        <td>@reminder.Title</td>
+                        <td>@reminder.ReminderDate.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @if (reminder.IsSent)
+                            {
+                                <span class="badge bg-success">Đã gửi</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">Chưa gửi</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Reminders.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Không có nhắc bảo dưỡng nào</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
