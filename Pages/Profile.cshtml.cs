@@ -84,7 +84,7 @@ public class ProfileModel : PageModel
         }
 
         StatusMessage = "Thông tin đã được cập nhật thành công.";
-        return RedirectToPage();
+        return Page();
     }
 }
 

@@ -12,6 +12,15 @@
                     <h2 class="h5 mb-0">Thông tin cá nhân</h2>
                 </div>
                 <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @Model.StatusMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
                     <form method="post">
                         <div class="mb-3">
                             <label asp-for="Input.FullName" class="form-label">Họ và tên</label>
