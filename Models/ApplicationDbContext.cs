@@ -20,6 +20,7 @@ namespace AutoGarageManager.Models
         public DbSet<ServiceHistoryPart> ServiceHistoryParts { get; set; }
         public DbSet<MaintenanceReminder> MaintenanceReminders { get; set; }
         public DbSet<SupportTicket> SupportTickets { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

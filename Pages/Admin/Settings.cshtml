@@ -5,49 +5,72 @@
     ViewData["Title"] = "Cài Đặt";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white border-0">
-                <h2 class="h6 mb-0">Thông tin cửa hàng</h2>
-            </div>
-            <div class="card-body">
-                <form>
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @Model.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Cài Đặt Thông Tin Cửa Hàng</h5>
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Tên cửa hàng</label>
-                        <input class="form-control" value="Auto Garage Manager" readonly />
+                        <input asp-for="AppSettings.StoreName" class="form-control" />
+                        <span asp-validation-for="AppSettings.StoreName" class="text-danger"></span>
                     </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="AppSettings.Email" type="email" class="form-control" />
+                        <span asp-validation-for="AppSettings.Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Địa chỉ</label>
-                        <input class="form-control" value="123 Đường ABC, Quận 1, TP. HCM" readonly />
+                        <textarea asp-for="AppSettings.Address" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="AppSettings.Address" class="text-danger"></span>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Số điện thoại</label>
-                        <input class="form-control" value="(028) 1234 5678" readonly />
+                        <input asp-for="AppSettings.PhoneNumber" type="tel" class="form-control" />
+                        <span asp-validation-for="AppSettings.PhoneNumber" class="text-danger"></span>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-header bg-white border-0">
-                <h2 class="h6 mb-0">Tùy chọn hệ thống</h2>
-            </div>
-            <div class="card-body">
-                <form>
+            <hr>
+
+            <h6 class="mb-3">Tùy chọn hệ thống</h6>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" checked disabled />
-                        <label class="form-check-label">Kích hoạt thông báo qua email</label>
+                        <input asp-for="AppSettings.EnableEmailNotifications" type="checkbox" class="form-check-input" />
+                        <label asp-for="AppSettings.EnableEmailNotifications" class="form-check-label">Kích hoạt thông báo qua email</label>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" checked disabled />
-                        <label class="form-check-label">Cho phép người dùng đăng ký</label>
+                        <input asp-for="AppSettings.AllowUserRegistration" type="checkbox" class="form-check-input" />
+                        <label asp-for="AppSettings.AllowUserRegistration" class="form-check-label">Cho phép người dùng đăng ký</label>
                     </div>
-                    <button class="btn btn-primary" disabled>Lưu cài đặt</button>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Lưu cài đặt</button>
+        </form>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
