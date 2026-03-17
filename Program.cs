@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure database connection
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+// ================= DATABASE =================
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Configure Identity
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
+
+// ================= IDENTITY =================
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -28,32 +30,50 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/AccessDenied";
 });
 
-// Add SMS Service
+// ================= SERVICES =================
 builder.Services.AddScoped<ISmsService, TwilioSmsService>();
 
-// Add Razor Pages
 builder.Services.AddRazorPages();
 
-// Start maintenance reminder job daily
+// Background job
 builder.Services.AddHostedService<MaintenanceReminderService>();
 
 var app = builder.Build();
 
-// Ensure database is created and seed default data
+// ================= INIT DATABASE =================
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
 
-    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
 
-    await SeedData.InitializeAsync(userManager, roleManager);
+        // Tạo DB + migrate
+        context.Database.Migrate();
+
+        // Seed data
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        await SeedData.InitializeAsync(userManager, roleManager);
+
+        Console.WriteLine("✅ Database migrated & seeded successfully");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("❌ ERROR DURING DB INIT:");
+        Console.WriteLine(ex.Message);
+        Console.WriteLine(ex.StackTrace);
+    }
 }
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// ================= MIDDLEWARE =================
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage(); // HIỆN LỖI CHI TIẾT
+}
+else
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
@@ -68,7 +88,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
-
 
 app.Run();
