@@ -25,6 +25,13 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // Ensure the required Name field is populated from FullName (UI binds FullName)
+        if (string.IsNullOrWhiteSpace(Customer.Name) && !string.IsNullOrWhiteSpace(Customer.FullName))
+        {
+            Customer.Name = Customer.FullName;
+            ModelState.Remove("Customer.Name");
+        }
+
         if (!ModelState.IsValid)
         {
             return Page();
